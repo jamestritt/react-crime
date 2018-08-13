@@ -1,53 +1,123 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+//import './.css';
 
 class App extends Component {
-  render() {
-    return (
-        
-    )
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            items: [],
+            isLoaded: false,
+        }
+    }
+    
+ getCrime = async (e) => {
+    if(!neighborhoods[neighborhood]){
+    	neighborhoods[neighborhood]= {};
+      neighborhoods[neighborhood].count = 1;
+      neighborhoods[neighborhood].offenses = {};
+      neighborhoods[neighborhood].victim_age = {};
+    neighborhoods[neighborhood].dayofweek = {};
+    neighborhoods[neighborhood].victim_gender= {};
+    
+  }else{
+  	neighborhoods[neighborhood].count ++;
   }
-}
+  
+
+  
+  if(!neighborhoods[neighborhood].offenses[item.offense]){ 
+  	neighborhoods[neighborhood].offenses[item.offense] = 1;
+    
+    }else{
+  	neighborhoods[neighborhood].offenses[item.offense] ++;
+  }
+  
+  
+  if(!neighborhoods[neighborhood].victim_age[item.victim_age]){ 
+  	neighborhoods[neighborhood].victim_age[item.victim_age] = 1;
+    
+    }else{
+  	neighborhoods[neighborhood].victim_age[item.victim_age] ++;
+  }
+  
+  
+    if(!neighborhoods[neighborhood].dayofweek[item.dayofweek]){ 
+  	neighborhoods[neighborhood].dayofweek[item.dayofweek] = 1;
+    
+    }else{
+  	neighborhoods[neighborhood].dayofweek[item.dayofweek] ++;
+  }
+  
+  
+     if(!neighborhoods[neighborhood].victim_gender[item.victim_gender]){ 
+  	neighborhoods[neighborhood].victim_gender[item.victim_gender] = 1;
+    
+    }else{
+  	neighborhoods[neighborhood].victim_gender[item.victim_gender] ++;
+  }
+  
+     
+     
+           this.setState({
+            count: item.count,
+            offense: item.offense,
+            victim_age: item.victim_age,
+            dayofweek: item.main.dayofweek,
+            victim_gender: item.victim_gender, 
+            error: ""
+        });
+        
 
      
+  };
 
-//<div class="jumbotron text-center">
-//  <h1>Cincinnati Crime Search</h1>
-//    <p class="">Us the search bar to check out the crime around cincinnati</p> 
-//    <label for="">Enter in a neighborhood: </label>
-//
-//</div>
-
-
- render() {
+    
+    componentDidMount(){
+        fetch('https://data.cincinnati-oh.gov/resource/ceds-in67.json')
+//        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res => res.json())
+        .then(json => {
+            this.setState({
+                isLoaded: true,
+                items: json,
+            })
+        });
+    }
+    
+    
+    
+    
+  render() {
+      
+      var { isLoaded, items } = this.state;
+      
+      if(!isLoaded){
+          return <div> Loading...</div>
+      }
+      
     return (
-      <div>
-        <div className="wrapper">
-          <div className="main">
-            <div className="container">
-              <div className="row">
-                <div className="col-xs-5 title-container">
-                  <Titles />
-                </div>
-                <div className="col-xs-7 form-container">
-                  <Form getWeather={this.getWeather} />
-                  <Weather 
-                    temperature={this.state.temperature} 
-                    humidity={this.state.humidity}
-                    city={this.state.city}
-                    country={this.state.country}
-                    description={this.state.description}
-                    error={this.state.error}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="App">
+
+        <ul>
+        
+        {items.map(item => (
+            <li key={item}>
+                Number of Offenses: {item.count},
+                Offense: {item.offense}
+                Age: {item.victim_age},
+                Day: {item.dayofweek}
+                Gender: {item.victim_gender},
+            </li>
+        ))}
+  
+  
+    
+        </ul>
+        
       </div>
     );
   }
-};
+}
 
 export default App;
