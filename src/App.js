@@ -11,8 +11,12 @@ class App extends Component {
         }
     }
     
- getCrime = async (e) => {
-    if(!neighborhoods[neighborhood]){
+get( endpoint, function(data){
+	data.forEach(function(item){
+  var neighborhood = item.cpd_neighborhood;
+  var age = item.victim_age;
+  
+  if(!neighborhoods[neighborhood]){
     	neighborhoods[neighborhood]= {};
       neighborhoods[neighborhood].count = 1;
       neighborhoods[neighborhood].offenses = {};
@@ -56,6 +60,16 @@ class App extends Component {
     }else{
   	neighborhoods[neighborhood].victim_gender[item.victim_gender] ++;
   }
+  
+  })
+  
+  
+  $('#tags').autocomplete({
+  	source: Object.keys(neighborhoods)
+  });
+   
+  
+});
   
      
      
