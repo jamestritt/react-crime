@@ -10,8 +10,22 @@ class App extends Component {
             isLoaded: false,
         }
     }
+
+
     
-get( endpoint, function(data){
+    componentDidMount(){
+        fetch('https://data.cincinnati-oh.gov/resource/ceds-in67.json')
+        .then(res => res.json())
+        .then(json => {
+            this.setState({
+                isLoaded: true,
+                items: json,
+            })
+        });
+    }
+    
+        
+get( componentDidMount, function(data){
 	data.forEach(function(item){
   var neighborhood = item.cpd_neighborhood;
   var age = item.victim_age;
@@ -85,21 +99,6 @@ get( endpoint, function(data){
 
      
   };
-
-    
-    componentDidMount(){
-        fetch('https://data.cincinnati-oh.gov/resource/ceds-in67.json')
-//        fetch('https://jsonplaceholder.typicode.com/users')
-        .then(res => res.json())
-        .then(json => {
-            this.setState({
-                isLoaded: true,
-                items: json,
-            })
-        });
-    }
-    
-    
     
     
   render() {
